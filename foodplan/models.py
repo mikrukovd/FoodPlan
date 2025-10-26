@@ -52,6 +52,12 @@ class MenuType(models.Model):
         null=True,
         verbose_name="Тип меню"
     )
+    image = models.ImageField(
+        upload_to='menu_types/',
+        blank=True,
+        null=True,
+        verbose_name="Изображение типа меню"
+    )
 
     def __str__(self):
         return self.name
@@ -67,6 +73,12 @@ class Dish(models.Model):
         blank=True,
         null=True,
         verbose_name="Название блюда"
+    )
+    image = models.ImageField(
+        upload_to='dishes/',
+        blank=True,
+        null=True,
+        verbose_name="Изображение блюда"
     )
     descriptions = models.TextField(
         blank=True,
@@ -234,3 +246,21 @@ class Subscription(models.Model):
     class Meta:
         verbose_name = "Подписка"
         verbose_name_plural = "Подписки"
+
+
+class MealType(models.Model):
+    name = models.CharField(
+        max_length=100,
+        verbose_name="Тип приема пищи"
+    )
+    is_default = models.BooleanField(
+        default=True,
+        verbose_name="Включен по умолчанию"
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Тип приема пищи"
+        verbose_name_plural = "Типы приемов пищи"
