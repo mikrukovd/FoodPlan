@@ -1,21 +1,20 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 
 
 class User(models.Model):
     name = models.CharField(
-        max_length=150,
+        max_length=100,
         blank=True,
         null=True,
         verbose_name="Имя пользователя"
     )
-    email = models.EmailField(unique=True, verbose_name="Электронная почта")
-    phone = models.CharField(
-        max_length=20,
+    email = models.CharField(
+        max_length=100,
         blank=True,
         null=True,
-        verbose_name="Телефон"
+        unique=True,
+        verbose_name="Электронная почта"
     )
     created_at = models.DateTimeField(
         default=timezone.now,
