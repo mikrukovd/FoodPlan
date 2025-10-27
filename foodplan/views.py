@@ -53,6 +53,22 @@ def auth_view(request):
 
 @login_required
 def lk(request):
+    user = request.user
+
+    if request.method == "POST":
+        username = request.POST.get("username", "").strip()
+        email = request.POST.get("email", "").strip().lower()
+
+        if not username or not email:
+            messages.error(request, "Имя и e-mail не могут быть пустыми.")
+        else:
+            user.username = username
+            user.email = email
+            user.save()
+            messages.success(request, "Данные успешно сохранены!")
+    
+        return redirect("lk")
+    
     return render(request, "lk.html")
 
 
