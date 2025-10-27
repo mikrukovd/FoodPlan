@@ -14,10 +14,10 @@
     <header>
         <nav class="navbar navbar-light fixed-top navbar__opacity">
             <div class="container">
-                <a class="navbar-brand" href="{% url 'index' %}">
+                <a class="navbar-brand" href="#">
                     <img src="{% static 'img/logo.8d8f24edbb5f.svg' %}" height="55" width="189" alt="">
                 </a>
-                <a class="btn shadow-none btn-outline-success foodplan_green foodplan__border_green" href="{% url 'auth' %}">Войти</a>
+                <a class="btn shadow-none btn-outline-success foodplan_green foodplan__border_green" href="{% url 'login' %}">Войти</a>
             </div>
         </nav>
     </header>
@@ -31,7 +31,7 @@
                             Вы получаете рецепты + список продуктов.<br>
                             Больше не нужно думать, что готовить.</h4>
                         <div class="d-block mt-3">
-                            <a class="btn shadow-none btn-outline-success foodplan_green foodplan__border_green" href="{% url 'order' %}">Хочу попробовать</a>
+                            <a href="{% url 'order' %}" class="btn shadow-none btn-outline-success foodplan_green foodplan__border_green">Хочу попробовать</a>
                         </div>
                     </div>
                 </div>

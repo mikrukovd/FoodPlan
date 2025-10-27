@@ -1,6 +1,6 @@
-{%  load static %}
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
@@ -9,8 +9,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <title>Foodplan 2021 - Меню на неделю FOODPLAN</title>
+    <title>Foodplan — Личный кабинет</title>
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-md navbar-light fixed-top navbar__opacity">
@@ -18,143 +19,205 @@
                 <a class="navbar-brand" href="{% url 'index' %}">
                     <img src="{% static 'img/logo.8d8f24edbb5f.svg' %}" height="55" width="189" alt="">
                 </a>
-                <button class="btn btn-outline-success shadow-none foodplan_green foodplan__border_green">Выйти</button>
+                <a href="{% url 'logout' %}"
+                    class="btn btn-outline-success shadow-none foodplan_green foodplan__border_green">
+                    Выйти
+                </a>
             </div>
         </nav>
     </header>
+
     <main style="margin-top: calc(2rem + 85px);">
         <section>
             <div class="container">
                 <div class="row">
                     <div class="card col-12 p-3 mb-5 foodplan__shadow">
-                        <h4 class="foodplan__backButton">
-                            <strong><small><a href="#" class="link-secondary fw-light"></a></small></strong>
-                        </h4>
                         <h2 class="text-center"><strong>Личный кабинет</strong></h2>
                     </div>
-                    
+
                     <div class="card col-12 col-md-2 p-3 mb-3 d-flex flex-column align-items-center foodplan__shadow">
                         <div class="position-relative">
-                            <img src="{% static 'img/test_avatar.png' %}" alt="" width="100" height="100" class="rounded-pill">
-                            <span class="badge rounded-circle position-absolute bottom-0 end-0 foodplan__bg_green avatar__plus"><a href="#"
-                                    class="link-dark text-decoration-none align-middle">+</a></span>
+                            <img src="{% static 'img/test_avatar.png' %}" alt="" width="100" height="100"
+                                class="rounded-pill">
+                            <span
+                                class="badge rounded-circle position-absolute bottom-0 end-0 foodplan__bg_green avatar__plus"><a
+                                    href="#" class="link-dark text-decoration-none align-middle">+</a></span>
                         </div>
-                        <h3 class="card-title text-center">Tim</h3>
+                        <h3 class="card-title text-center">{{ request.user.username }}</h3>
                         <div class="d-block">
-                            <button class="btn btn-outline-success shadow-none foodplan_green foodplan__border_green">Выйти</button>
+                            <a href="{% url 'logout' %}"
+                                class="btn btn-outline-success shadow-none foodplan_green foodplan__border_green">Выйти</a>
                         </div>
                     </div>
 
                     <div class="card col-12 col-md-10 p-3 mb-3 foodplan__shadow">
-                            <ul class="nav nav-tabs">
-                                <li class="nav-item foodplan__tab-item">
-                                    <button id="tab1" class="btn shadow-none foodplan__tab-button active" data-bs-toggle="tab" data-bs-target="#data">Персональные данные</button>
-                                </li>
-                                <li class="nav-item foodplan__tab-item">
-                                    <button id="tab2" class="btn shadow-none foodplan__tab-button" data-bs-toggle="tab" data-bs-target="#menu">Моё меню</button>
-                                </li>
-                                <li class="nav-item foodplan__tab-item flex-grow-1"></li>
-                            </ul>
-                            <div class="tab-content mt-2">
-                                <div class="tab-pane fade show active" id="data">
-                                    <form action="">
-                                        <div class="mb-3">
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <label for="exampleInputEmail1" class="form-label">Имя</label>
-                                                <small><a href="#" class="link-dark foodplan_green">изменить</a></small>
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item foodplan__tab-item">
+                                <button id="tab1" class="btn shadow-none foodplan__tab-button active"
+                                    data-bs-toggle="tab" data-bs-target="#data">Персональные данные</button>
+                            </li>
+                            <li class="nav-item foodplan__tab-item">
+                                <button id="tab2" class="btn shadow-none foodplan__tab-button" data-bs-toggle="tab"
+                                    data-bs-target="#menu">Моё меню</button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content mt-2">
+                            <!-- Персональные данные -->
+                            <div class="tab-pane fade show active" id="data">
+                                <form method="post">
+                                    {% csrf_token %}
+
+                                    <div class="mb-3">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <label for="name" class="form-label">Имя</label>
+                                            <small><a href="#" id="edit-name"
+                                                    class="link-dark foodplan_green">изменить</a></small>
+                                        </div>
+                                        <input type="text" class="form-control" id="name" name="username"
+                                            value="{{ request.user.username }}" readonly>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <label for="email" class="form-label">Email</label>
+                                            <small><a href="#" id="edit-email"
+                                                    class="link-dark foodplan_green">изменить</a></small>
+                                        </div>
+                                        <input type="email" class="form-control" id="email" name="email"
+                                            value="{{ request.user.email }}" readonly>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <label for="password" class="form-label">Пароль</label>
+                                            <small><a href="#" id="edit-password"
+                                                    class="link-dark foodplan_green">изменить</a></small>
+                                        </div>
+                                        <input type="password" class="form-control" id="password" name="password"
+                                            placeholder="Новый пароль" readonly>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="PasswordConfirm" class="form-label">Подтверждение пароля</label>
+                                        <input type="password" class="form-control" id="PasswordConfirm"
+                                            name="password_confirm" placeholder="Повторите новый пароль" readonly>
+                                    </div>
+
+                                    <div class="d-block">
+                                        <button type="submit" id="save-button"
+                                            class="btn shadow-none btn-outline-success foodplan_green foodplan__border_green"
+                                            style="display:none;">Сохранить изменения</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Моё меню -->
+                            <div class="tab-pane fade" id="menu">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <img src="{% static 'img/circle1.png' %}" alt="" class="w-100">
+                                    </div>
+                                    <div class="col-10 col-md-10">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h2>Название подписки</h2>
                                             </div>
-                                        
-                                            <input type="text" class="form-control" id="name">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="exampleInputEmail1" class="form-label">Email</label>
-                                            <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <label for="exampleInputPassword1" class="form-label">Пароль</label>
-                                                <small><a href="#" class="link-dark foodplan_green">изменить</a></small>
+                                            <div class="col-md-12 col-lg-9">
+                                                <h6>Описание подписки Lorem ipsum dolor sit amet consectetur adipisicing
+                                                    elit...</h6>
                                             </div>
-                                        
-                                            <input type="password" class="form-control" id="password">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="exampleInputPassword1" class="form-label">Подтверждение пароля</label>
-                                            <input type="password" class="form-control" id="PasswordConfirm">
-                                        </div>
-                                        <div class="d-block">
-                                            <button type="submit" class="btn shadow-none btn-outline-success foodplan_green foodplan__border_green">Сохранить
-                                                изменения</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="tab-pane fade" id="menu">
-                                    <div class="row">
-                                        <div class="col-2">
-                                            <img src="{% static 'img/circle1.png' %}" alt="" class="w-100">
-                                        </div>
-                                        <div class="col-10 col-md-10">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <h2>Название подписки</h2>
+                                            <div
+                                                class="col-md-12 col-lg-3 text-muted d-flex flex-column justify-content-between">
+                                                <div class="d-flex flex-row justify-content-between">
+                                                    <small>Персоны: </small><small>3</small>
                                                 </div>
-                                                <div class="col-md-12 col-lg-9">
-                                                    <h6>Описание подписки Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eius saepe ea nobis necessitatibus
-                                                        consectetur rem! Eligendi assumenda facere sint quibusdam dolorem quasi doloribus nemo, temporibus molestiae
-                                                        distinctio cum laboriosam sed. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eius saepe ea nobis
-                                                        necessitatibus consectetur rem! Eligendi
-                                                        assumenda facere sint quibusdam dolorem quasi doloribus nemo, temporibus molestiae distinctio cum laboriosam
-                                                        sed.</h6>
+                                                <div class="d-flex flex-row justify-content-between">
+                                                    <small>Аллергии: </small><small>нет</small>
                                                 </div>
-                                                <div class="col-md-12 col-lg-3 text-muted d-flex flex-column justify-content-between">
-                                                    <div class="d-flex flex-row justify-content-between">
-                                                        <small>Персоны: </small><small>3</small>
-                                                    </div>
-                                                    <div class="d-flex flex-row justify-content-between">
-                                                        <small>Аллергии: </small><small>нет</small>
-                                                    </div>
-                                                    <div class="d-flex flex-row justify-content-between">
-                                                        <small>Калории: </small><small>1400</small>
-                                                    </div>
-                                                    <div class="d-flex flex-row justify-content-between">
-                                                        <small>Кол-во приёмов пищи: </small><small>4</small>
-                                                    </div>
-                                                    
+                                                <div class="d-flex flex-row justify-content-between">
+                                                    <small>Калории: </small><small>1400</small>
+                                                </div>
+                                                <div class="d-flex flex-row justify-content-between">
+                                                    <small>Кол-во приёмов пищи: </small><small>4</small>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
+                        </div>
+
                     </div>
                 </div>
             </div>
         </section>
     </main>
-    <footer>
-        <nav class="navbar navbar-expand-md navbar-light mt-5">
-            <div class="container p-2">
-                <a class="navbar-brand" href="#">
-                    <img src="{% static 'img/logo.8d8f24edbb5f.svg' %}" height="55" width="189" alt="">
-                </a>
-                <div class="footer__sideBtns d-flex">
-                    <a href="#">
-                        <img src="{% static 'img/vk.png' %}" height="38" width="auto" alt="">
-                    </a>
+
+    <!-- Bootstrap Toasts -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1080;">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="toast text-white {% if 'success' in message.tags %}bg-success{% elif 'error' in message.tags %}bg-danger{% elif 'info' in message.tags %}bg-info{% else %}bg-secondary{% endif %}"
+            role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="3500">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ message }}
                 </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
             </div>
-        </nav>
-    </footer>
-    <footer class="footer pt-2" style="border-top: 1px solid lightgray;">
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+    <footer class="footer pt-2 mt-5" style="border-top: 1px solid lightgray;">
         <div class="container d-flex flex-row justify-content-center mb-2">
             <small class="text-center">
-                <h6>© Девман2022. Все права защищены. © Devman2022. All right reserved.</h6><a href="#"
-                    class="link-secondary">Политика конфиденциальности</a>
+                <h6>© Девман2022. Все права защищены. © Devman2022. All right reserved.</h6>
+                <a href="#" class="link-secondary">Политика конфиденциальности</a>
             </small>
         </div>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+
+    <script>
+        // Переключение полей редактирования
+        const toggleEdit = (linkId, inputIds) => {
+            const link = document.getElementById(linkId);
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const editable = inputIds.map(id => document.getElementById(id));
+                const saveButton = document.getElementById('save-button');
+
+                if (editable[0].hasAttribute('readonly')) {
+                    editable.forEach(inp => inp.removeAttribute('readonly'));
+                    saveButton.style.display = 'inline-block';
+                    link.textContent = 'отменить';
+                    editable[0].focus();
+                } else {
+                    editable.forEach(inp => inp.setAttribute('readonly', true));
+                    link.textContent = 'изменить';
+                    const allReadonly = [...document.querySelectorAll('input')].every(i => i.hasAttribute('readonly'));
+                    if (allReadonly) saveButton.style.display = 'none';
+                }
+            });
+        };
+
+        toggleEdit('edit-name', ['name']);
+        toggleEdit('edit-email', ['email']);
+        toggleEdit('edit-password', ['password', 'PasswordConfirm']);
+
+        // Автоматическое отображение тостов
+        document.addEventListener('DOMContentLoaded', function () {
+            const toastElList = [].slice.call(document.querySelectorAll('.toast'));
+            toastElList.forEach(toastEl => new bootstrap.Toast(toastEl).show());
+        });
+    </script>
 </body>
+
+</html>
